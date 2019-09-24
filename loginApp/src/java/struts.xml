@@ -1,0 +1,37 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.devMode" value="true" />
+	<package name="login" extends="struts-default" namespace="/LoginUser">
+		<interceptors>
+			<interceptor class="com.jkit.loginapi.interceptor.LoginInterceptor" name="loginInterceptor">
+			</interceptor>
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+
+		<global-results>
+			<result name="login">/login/login.jsp</result>
+		</global-results>
+
+		<!--   login action  -->
+		<action name="loginUser" class="com.jkit.loginapi.actions.LoginAction" method="loginRegisterUser">
+			<result name="success" type="redirect">homeAction.action</result>
+			<result name="login">/login/login.jsp</result>
+		</action>
+
+		<!-- home link action -->
+		<action name="homeAction" class="com.jkit.loginapi.actions.LoginAction" method="home">
+			<interceptor-ref name="loginStack" />
+			<result name="success">/WEB-INF/jsps/user/home.jsp</result>
+		</action>
+		<!--   logout action  -->
+		<action name="logOut" class="com.jkit.loginapi.actions.LoginAction" method="logOut">
+			<result name="success">/login/login.jsp</result>
+		</action>
+	</package>
+</struts>
